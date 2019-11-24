@@ -1,0 +1,35 @@
+services:
+  App\Application\Http\Handler\HomePage:
+  App\Application\Http\Handler\AddTodo:
+  App\Application\Http\Middleware\AddTodoValidator:
+  App\Application\Http\Handler\DoneTodo:
+  App\Application\Http\Handler\RemoveTodo:
+  App\Domain\TodoRepository:
+    class: App\Infrastructure\MysqlTodoRepository
+
+  React\MySQL\ConnectionInterface:
+    factory: [App\Container\ReactMysqlConnectionFactory, 'root:secret@mysql_server:3306/react_antidot_todo']
+
+  ## Twig config
+  Twig\Loader\FilesystemLoader:
+    class: Twig\Loader\FilesystemLoader
+    arguments:
+      $paths: 'templates'
+
+  Twig\Environment:
+    class: Twig\Environment
+    arguments:
+      $loader: '@Twig\Loader\FilesystemLoader'
+      $options:
+        cache: 'var/cache/twig'
+
+parameters:
+  debug: false
+  config_cache_enabled: true
+  monolog:
+    handlers:
+      default:
+        type: 'stream'
+        options:
+          stream: 'var/log/%date%-default.log'
+          level: 400

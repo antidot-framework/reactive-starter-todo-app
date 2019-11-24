@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="columns p-2">
+        <div class="column col-8 col-sm-12 col-md-10 p-centered">
+            {% include 'todo/add-todo.html.twig' %}
+        </div>
+    </div>
+    <div class="columns p-2">
+        <div class="column col-8 col-sm-12 col-md-10 p-centered">
+            <div class="panel">
+                <div class="panel-header p-centered">
+                    <div class="panel-title">
+                        <h2>Todos</h2>
+                    </div>
+                </div>
+                <div class="panel-nav">
+                    <ul class="tab tab-block">
+                        <li id="tab-item-1" class="tab-item active"><a href="#" data-value="panel1">Pending</a></li>
+                        <li id="tab-item-2" class="tab-item"><a href="#" data-value="panel2">Done</a></li>
+                    </ul>
+                </div>
+                <div id="panel1">
+                    {% include 'todo/pending-todo.html.twig' %}
+                </div>
+                <div id="panel2" class="hidden">
+                    {% include 'todo/done-todo.html.twig' %}
+                </div>
+            </div>
+        </div>
+        <div class="divider"></div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var tabsButtons = document.getElementsByClassName('tab-item');
+
+            for (var index = 0;  index < tabsButtons.length; index++) {
+                tabsButtons[index].addEventListener('click', togglePanels);
+            }
+        });
+
+        function togglePanels(evt) {
+            evt.preventDefault();
+
+            var hiddenPanel = null;
+            var currentPanel = evt.target.getAttribute('data-value');
+            var activePanel = document.getElementById(currentPanel);
+            var panel1 = document.getElementById('tab-item-1');
+            var panel2 = document.getElementById('tab-item-2');
+            activePanel.classList.remove('hidden');
+            if ('panel1' === currentPanel) {
+                panel1.classList.add('active');
+                panel2.classList.remove('active');
+                hiddenPanel = document.getElementById('panel2');
+                hiddenPanel.classList.add('hidden');
+            } else {
+                panel2.classList.add('active');
+                panel1.classList.remove('active');
+                hiddenPanel = document.getElementById('panel1');
+                hiddenPanel.classList.add('hidden');
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .panel {
+            background: #ffffff;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+{% endblock %}

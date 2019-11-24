@@ -1,0 +1,7 @@
+.idea
+driftphp-test.iml
+app/composer.lock
+app/vendor
+app/modules
+app/var/cache/*
+app/var/log/*

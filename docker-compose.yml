@@ -1,0 +1,46 @@
+version: '3'
+
+volumes:
+  mysql_data:
+  redis:
+
+networks:
+  react-antidot-net:
+
+services:
+  react_antidot_server:
+    build: ./php-cli/
+    ports:
+      - 8080:8080
+    links:
+      - mysql_server
+    depends_on:
+      - mysql_server
+    volumes:
+      - ./app:/opt/app
+    working_dir: /opt/app
+    command: ["/opt/wait-for-mysql.sh", "mysql_server", "bin/console", "react-server:http"]
+    networks:
+      - react-antidot-net
+
+  mysql_server:
+    build: ./mysql/
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: react_antidot_todo
+      MYSQL_USER: devel
+      MYSQL_PASSWORD: devel
+    networks:
+      - react-antidot-net
+  redis:
+    image: redis:latest
+    volumes:
+      - redis:/var/lib/redis
+    networks:
+      - react-antidot-net
+

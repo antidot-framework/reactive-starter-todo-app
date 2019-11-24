@@ -1,0 +1,27 @@
+{% set pendingTodos = 0 %}
+<div class="panel-body">
+    <div class="divider"></div>
+    {% for todo in todos %}
+        {% if todo.status == 'pending' %}
+            <div class="card">
+                <div class="card-body">
+                    {{ todo.message }}
+                </div>
+                <div class="card-footer">
+                    <form action="todos/{{ todo.todo_id }}/done" method="post">
+                        <button class="btn btn-warning float-right">
+                            <i class="icon icon-cross"></i>
+                            Done
+                        </button>
+                    </form>
+                    <small class="primary">{{ todo.created_at }}</small>
+                </div>
+            </div>
+            {% set pendingTodos = pendingTodos + 1 %}
+        {% endif %}
+    {% endfor %}
+    {% if pendingTodos == 0 %}
+        {% include 'todo/empty-pending-todo.html.twig' %}
+    {% endif %}
+    <div class="divider"></div>
+</div>

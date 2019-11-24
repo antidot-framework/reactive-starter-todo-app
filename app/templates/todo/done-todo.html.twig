@@ -1,0 +1,27 @@
+{% set doneTodos = 0 %}
+<div class="panel-body">
+    <div class="divider"></div>
+    {% for todo in todos %}
+        {% if todo.status == 'done' %}
+            <div class="card">
+                <div class="card-body">
+                    {{ todo.message }}
+                </div>
+                <div class="card-footer">
+                    <form action="todos/{{ todo.todo_id }}/remove" method="post">
+                        <button class="btn btn-warning float-right">
+                            <i class="icon icon-delete"></i>
+                            Remove
+                        </button>
+                    </form>
+                    <small class="primary">{{ todo.updated_at }}</small>
+                </div>
+            </div>
+            {% set doneTodos = doneTodos + 1 %}
+        {% endif %}
+    {% endfor %}
+    {% if doneTodos == 0 %}
+        {% include'todo/empty-done-todo.html.twig' %}
+    {% endif %}
+    <div class="divider"></div>
+</div>
