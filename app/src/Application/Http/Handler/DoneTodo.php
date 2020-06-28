@@ -11,7 +11,10 @@ use App\Domain\TodoRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\Diactoros\Response\RedirectResponse;
+use Laminas\Diactoros\Response\RedirectResponse;
+use Throwable;
+
+use function React\Promise\resolve;
 
 class DoneTodo implements RequestHandlerInterface
 {
@@ -30,17 +33,14 @@ class DoneTodo implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return new PromiseResponse(
+        return new PromiseResponse(resolve(
             $this->repository->get(TodoId::fromString($request->getAttribute('todo_id')))
                 ->then(static function (Todo $todo): Todo {
                     $todo->done();
                     return $todo;
                 })
-                ->then(function (Todo $todo): ResponseInterface {
-                    $this->repository->save($todo);
-
-                    return new RedirectResponse('/');
-                })
-        );
+                ->then(fn(Todo $todo) => $this->repository->save($todo))
+                ->then(fn () => new RedirectResponse('/'))
+        ));
     }
 }

@@ -8,7 +8,7 @@
                     {{ todo.message }}
                 </div>
                 <div class="card-footer">
-                    <form action="todos/{{ todo.todo_id }}/done" method="post">
+                    <form action="/todos/{{ todo.todo_id }}/done" method="post">
                         <button class="btn btn-warning float-right">
                             <i class="icon icon-cross"></i>
                             Done

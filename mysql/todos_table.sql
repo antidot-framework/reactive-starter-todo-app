@@ -3,5 +3,5 @@ CREATE TABLE `todos` (
     `message` LONGTEXT NOT NULL,
     `status` ENUM('pending', 'done') DEFAULT 'pending' NOT NULL,
     `created_at` DATETIME NOT NULL,
-    `updated_at` DATETIME DEFAULT NOW()
+    `updated_at` DATETIME DEFAULT NULL
 ) ENGINE="InnoDb" CHARACTER SET="utf8";

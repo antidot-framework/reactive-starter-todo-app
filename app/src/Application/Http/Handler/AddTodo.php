@@ -15,8 +15,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Ramsey\Uuid\Uuid;
-use React\Promise\FulfilledPromise;
-use Zend\Diactoros\Response\RedirectResponse;
+use Laminas\Diactoros\Response\RedirectResponse;
+
+use function React\Promise\resolve;
 
 class AddTodo implements RequestHandlerInterface
 {
@@ -33,25 +34,19 @@ class AddTodo implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $promise = new FulfilledPromise($request);
-
         return new PromiseResponse(
-            $promise
-                ->then(static function (ServerRequestInterface $request): AddTodoRequest {
-                    return $request->getAttribute('todo_message');
-                })
+            resolve($request)
+                ->then(
+                    static fn(ServerRequestInterface $request): AddTodoRequest => $request->getAttribute('todo_message')
+                )
                 ->then(static function (AddTodoRequest $todoRequest): Todo {
                     return Todo::fromTodoIdAndMessage(
                         TodoId::fromString(Uuid::uuid4()->toString()),
                         TodoMessage::fromString($todoRequest->message())
                     );
                 })
-                ->then(function (Todo $todo): ResponseInterface {
-                    $this->repository->save($todo);
-                    return new RedirectResponse('/');
-                }, static function (\Throwable $e) {
-                    throw $e;
-                })
+                ->then(fn (Todo $todo) => $this->repository->save($todo))
+                ->then(fn () => new RedirectResponse('/'))
         );
     }
 }

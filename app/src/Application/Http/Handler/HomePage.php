@@ -14,6 +14,8 @@ use React\Promise\PromiseInterface;
 use Twig\Environment;
 use Zend\Diactoros\Response\HtmlResponse;
 
+use function React\Promise\resolve;
+
 class HomePage implements RequestHandlerInterface
 {
     private $templateEngine;
@@ -30,9 +32,9 @@ class HomePage implements RequestHandlerInterface
         return new PromiseResponse($this->repository
             ->findAll()
             ->then(function (QueryResult $queryResult) {
-                return new HtmlResponse($this->templateEngine->render('index.html.twig', [
+                return resolve(new HtmlResponse($this->templateEngine->render('index.html.twig', [
                     'todos' => $queryResult->resultRows,
-                ]));
+                ])));
             }));
     }
 }
