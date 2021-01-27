@@ -8,11 +8,11 @@ use DateTimeImmutable;
 
 class Todo
 {
-    private $todoId;
-    private $message;
-    private $existSince;
-    private $status;
-    private $doneAt;
+    private TodoId $todoId;
+    private TodoMessage $message;
+    private DateTimeImmutable $existSince;
+    private TodoStatus $status;
+    private ?DateTimeImmutable $doneAt;
 
     private function __construct(
         TodoId $todoId,
@@ -65,7 +65,7 @@ class Todo
         return $this->message;
     }
 
-    public function existSince()
+    public function existSince(): DateTimeImmutable
     {
         return $this->existSince;
     }

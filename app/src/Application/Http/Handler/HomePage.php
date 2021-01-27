@@ -18,8 +18,8 @@ use function React\Promise\resolve;
 
 class HomePage implements RequestHandlerInterface
 {
-    private $templateEngine;
-    private $repository;
+    private Environment $templateEngine;
+    private TodoRepository $repository;
 
     public function __construct(Environment $template, TodoRepository $repository)
     {

@@ -1,0 +1,6 @@
+[submodule "app/modules/react-socket-server"]
+	path = app/modules/react-socket-server
+	url = git@github.com:antidot-framework/react-socket-server
+[submodule "app/modules/react-http-server"]
+	path = app/modules/react-http-server
+	url = git@github.com:antidot-framework/react-http-server

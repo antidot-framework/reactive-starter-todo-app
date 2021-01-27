@@ -29,6 +29,7 @@ class AddTodoValidator implements MiddlewareInterface
         return new PromiseResponse(
             $promise
                 ->then(static function (ServerRequestInterface $request) {
+                    /** @var array<string, string> $form */
                     $form = $request->getParsedBody();
                     Assert::notEmpty($form);
                     Assert::keyExists($form, 'todo_message');

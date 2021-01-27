@@ -19,7 +19,7 @@ services:
     volumes:
       - ./app:/opt/app
     working_dir: /opt/app
-    command: ["bin/console", "react-server:http"]
+    command: ["php", "public/index.php"]
     networks:
       - react-antidot-net
 

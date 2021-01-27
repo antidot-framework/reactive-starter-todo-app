@@ -12,3 +12,8 @@ services:
     class: Antidot\Application\Http\Response\ServerRequestErrorResponseGenerator
     arguments:
       $devMode: 'true'
+
+  server:
+    max_concurrency: 512
+    buffer_size: 2097152
+    workers: 1
